@@ -14,7 +14,7 @@ rm -rf node_modules package-lock.json out .next
 npm cache clean --force
 npm install
 npm run build
-npx serve ./out
+npx serve ./out -s --cors -l 3000
 ```
 
 

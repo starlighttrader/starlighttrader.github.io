@@ -33,7 +33,7 @@ const Header = ({ currency, setCurrency }) => {
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
             <Image
-              src={isDarkMode ? "/logo_dark.png" : "/logo.png"}
+              src={isDarkMode ? "./logo_dark.png" : "./logo.png"}
               alt="StarLightTrader Logo"
               width={150}
               height={40}
