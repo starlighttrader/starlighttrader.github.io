@@ -3,9 +3,9 @@
 const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig = {
-  output: 'export',
-  images: { unoptimized: true },
-  poweredByHeader: false,
+  poweredByHeader: false,  
+  images: { unoptimized: true},  
+  output: isProd ? 'export' : undefined,
   assetPrefix: isProd ? '/starlighttrader.github.io/' : '',
   basePath: isProd ? '/starlighttrader.github.io' : '',
 };

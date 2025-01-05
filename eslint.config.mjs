@@ -1,55 +1,12 @@
-import js from '@eslint/js';
-import nextPlugin from '@next/eslint-plugin-next';
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 
-export default [
-  js.configs.recommended,
-  {
-    ignores: [
-      'node_modules/**',
-      '.next/**',
-      'out/**',
-      'public/**'
-    ],
-    files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
-    plugins: {
-      '@next/next': nextPlugin
-    },
-    languageOptions: {
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true
-        }
-      },
-      globals: {
-        // Browser globals
-        window: 'readonly',
-        document: 'readonly',
-        fetch: 'readonly',
-        alert: 'readonly',
-        console: 'readonly',
-        URLSearchParams: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        // Next.js globals
-        Image: 'readonly',
-        Link: 'readonly',
-        Component: 'readonly',
-        Html: 'readonly',
-        Head: 'readonly',
-        Main: 'readonly',
-        NextScript: 'readonly'
-      }
-    },
-    rules: {
-      '@next/next/no-html-link-for-pages': 'error',
-      // Turn off no-unused-vars warning
-      'no-unused-vars': 'off',
-      'no-undef': 'error',
-      // Add specific Next.js rules
-      '@next/next/no-img-element': 'off',
-      '@next/next/no-sync-scripts': 'warn'
-    }
-  }
-];
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({baseDirectory: __dirname});
+
+const eslintConfig = [...compat.extends("next/core-web-vitals")];
+
+export default eslintConfig;
