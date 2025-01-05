@@ -26,7 +26,7 @@ const WhyUs = () => {
     <>
       <section id="why-us" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">About Us</h2>
           
           <div className="space-y-8">
             <p className="text-lg">
@@ -40,7 +40,7 @@ const WhyUs = () => {
             </p>
 
             <p className="text-lg">
-              <b>StarLightTraders</b> is a community that brings to together like-minded people who want to trade and profit from the markets in a peaceful manner. 
+              <b>StarLightTraders</b> is a community that brings together like-minded people who want to trade and profit from the markets in a peaceful manner. 
               The founding members of the community are also data scientists by profession and stock market investors and traders by passion. 
               Our collective experience exceeds several 1000 hrs in trading and analyzing the financial markets, and studying various courses in technical analysis and financial astrology. 
               We are inspired to teach the knowledge gathered by us, as well as share what worked and did not work for us.

@@ -8,7 +8,7 @@ Static Website built using `NextJS` for [StarLightTrader.github.io](https://star
 1. Run the static site build using `npm run build`
 2. Render the static site locally using `npx serve ./out`
 
-If you are making changes and want to start fresh with building a static site , execute the below steps:
+If you are making changes and want to start fresh with building a static site and remove any existing static site builds, execute the below steps:
 ```bash
 rm -rf node_modules package-lock.json out .next
 npm cache clean --force

@@ -8,7 +8,7 @@ const Footer = () => {
     quickLinks: [
       { name: 'Home', href: '#home' },
       { name: 'Shop', href: '#shop' },
-      { name: 'Why Us', href: '#why-us' },
+      { name: 'About Us', href: '#why-us' },
       { name: 'Contact', href: '#contact' },
     ],
     legal: [
@@ -19,6 +19,10 @@ const Footer = () => {
       { 
         name: 'Privacy Policy', 
         href: 'https://vivacious-plot-3b2.notion.site/Privacy-Policy-1704c2c3bfc180069ba9f9541069f384'
+      },
+      { 
+        name: 'Refund Policy',
+        href: 'https://vivacious-plot-3b2.notion.site/Refund-Policy-1724c2c3bfc18073a8cef2690dcefbb1?pvs=73'
       },
       { 
         name: 'FAQs', 
@@ -43,8 +47,50 @@ const Footer = () => {
               />
             </Link>
             <p className="text-sm">
-              Enhance your trading performance with our Financial Astrology courses and indicators.
+              Using Financial Astrology for better trading.
             </p>
+            <div className="flex space-x-4 mt-4">
+              <Link
+                href="https://wa.me/918925375889"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+              >
+                <Image
+                  src="/icons8-whatsapp.svg"
+                  alt="WhatsApp"
+                  width={24}
+                  height={24}
+                />
+              </Link>
+              <Link
+                href="https://youtube.com/@StarLightTrader"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+              >
+                <Image
+                  src="/icons8-youtube.svg"
+                  alt="YouTube"
+                  width={24}
+                  height={24}
+                />
+              </Link>
+              <Link
+                href="https://x.com/StarLiTrader"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+              >
+                <Image
+                  src="/icons8-x.svg"
+                  alt="X (Twitter)"
+                  width={24}
+                  height={24}
+                  className="invert"
+                />
+              </Link>
+            </div>
           </div>
 
           {/* Quick Links */}

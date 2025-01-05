@@ -21,8 +21,8 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="home" className="relative h-screen mt-20">
-      <div className="absolute inset-0 w-full h-full">
+    <section id="home" className="relative h-[70vh] bg-black mt-[6vh]">
+      <div className="absolute inset-0 w-full">
         <video
           autoPlay
           muted
