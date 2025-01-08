@@ -36,7 +36,7 @@ const Hero = () => {
       
       <div className="absolute inset-0 bg-black/60">
         <div className="max-w-4xl mx-auto h-full flex flex-col justify-center px-4 text-white">
-          <h1 className="text-5xl font-bold mb-6 animate-fade-in">
+          <h1 className="text-5xl font-bold mb-6 animate-fade-in text-center">
             Enhance your Trading Performance
           </h1>
           <p className="text-xl mb-6 animate-fade-in-delay text-center">
