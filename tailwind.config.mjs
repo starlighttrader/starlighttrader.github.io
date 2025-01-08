@@ -35,7 +35,10 @@ export default {
       },
     },
   },
-  plugins: [addVariablesForColors],
+  plugins: [
+    require('@tailwindcss/typography'),
+    addVariablesForColors,
+  ],
 };
 
 // This plugin adds each Tailwind color as a global CSS variable

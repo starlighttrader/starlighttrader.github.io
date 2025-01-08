@@ -14,19 +14,27 @@ const Footer = () => {
     legal: [
       { 
         name: 'Terms & Conditions', 
-        href: 'https://vivacious-plot-3b2.notion.site/Terms-and-Conditions-1704c2c3bfc180d7ba28c25f369bb7bc'
+        href: '/legal/TermsConditions',
+        target: '_blank',
+        rel: 'noopener noreferrer'
       },
       { 
         name: 'Privacy Policy', 
-        href: 'https://vivacious-plot-3b2.notion.site/Privacy-Policy-1704c2c3bfc180069ba9f9541069f384'
+        href: '/legal/PrivacyPolicy',
+        target: '_blank',
+        rel: 'noopener noreferrer'
       },
       { 
         name: 'Refund Policy',
-        href: 'https://vivacious-plot-3b2.notion.site/Refund-Policy-1724c2c3bfc18073a8cef2690dcefbb1?pvs=73'
+        href: '/legal/RefundPolicy',
+        target: '_blank',
+        rel: 'noopener noreferrer'
       },
       { 
         name: 'FAQs', 
-        href: 'https://vivacious-plot-3b2.notion.site/FAQs-1704c2c3bfc180d59433ee45d0bb2010'
+        href: '/legal/FAQs',
+        target: '_blank',
+        rel: 'noopener noreferrer'
       },
     ],
   };
@@ -119,8 +127,8 @@ const Footer = () => {
                   <Link 
                     href={link.href}
                     className="text-sm hover:text-white transition-colors"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={link.target}
+                    rel={link.rel}
                   >
                     {link.name}
                   </Link>

@@ -36,3 +36,61 @@ body {
 .animate-fade-in-delay-2 {
   animation: fadeIn 1s ease-out 1s both;
 }
+
+/* Custom styles for MDX content */
+.prose {
+  @apply text-black;
+}
+
+.prose h1 {
+  @apply text-4xl font-bold mb-8 text-black;
+}
+
+.prose h2 {
+  @apply text-3xl font-semibold mb-6 mt-12 text-black;
+}
+
+.prose h3 {
+  @apply text-2xl font-semibold mb-4 mt-8 text-blue-600;
+}
+
+.prose p {
+  @apply mb-6 leading-relaxed;
+}
+
+.prose ul {
+  @apply list-disc list-outside mb-6 ml-6 marker:text-gray-800;
+}
+
+.prose ol {
+  @apply list-decimal list-outside mb-6 ml-6;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+.prose a {
+  @apply text-blue-400 hover:text-blue-300 underline;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-gray-600 pl-4 italic my-6;
+}
+
+.prose code::before,
+.prose code::after {
+  content: "" !important; 
+}
+
+.prose code {
+  @apply bg-gray-100 text-red-600 rounded px-1 py-0.5;
+}
+
+.prose pre {
+  @apply bg-gray-100 rounded p-4 my-6 overflow-x-auto;
+}
+
+.prose pre code {
+  @apply bg-transparent text-red-600;
+}
