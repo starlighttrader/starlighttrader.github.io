@@ -2,12 +2,26 @@ import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote } from 'next-mdx-remote'
 import fs from 'fs'
 import path from 'path'
-
+import { useEffect, useState } from 'react'
 
 const LegalPage = ({ source }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    setIsDarkMode(darkModeMediaQuery.matches)
+
+    const handleThemeChange = (e) => {
+      setIsDarkMode(e.matches)
+    }
+
+    darkModeMediaQuery.addEventListener('change', handleThemeChange)
+    return () => darkModeMediaQuery.removeEventListener('change', handleThemeChange)
+  }, [])
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <div className="prose prose-lg mx-auto">
+      <div className={`prose prose-lg mx-auto ${isDarkMode ? 'prose-invert' : ''}`}>
         <MDXRemote {...source} />
       </div>
     </div>

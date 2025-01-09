@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-Welcome to [StarLightTrader](https://starlighttrader.github.io/). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use our website and services.
+Welcome to [**StarLightTrader**](https://starlighttrader.github.io/). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use our website and services.
 
 ## 2. Information We Collect
 

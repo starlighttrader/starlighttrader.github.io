@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-This Refund Policy outlines the terms and conditions for refunds at [StarLightTrader](https://starlighttrader.github.io/). We strive to ensure customer satisfaction while maintaining fair business practices.
+This Refund Policy outlines the terms and conditions for refunds at [**StarLightTrader**](https://starlighttrader.github.io/). We strive to ensure customer satisfaction while maintaining fair business practices.
 
 ## 2. TradingView Indicators Refund Policy
 
@@ -27,6 +27,7 @@ To request a refund:
 - Contact our support team through the contact form
 - Provide your order number and reason for the refund
 - Refunds are typically processed within 5-7 business days
+- The final refund amount may be reduced by any applicable payment processing fees or charges levied by the payment provider (Stripe, PayPal, CashFree etc.)
 
 ## 5. Exceptions
 
