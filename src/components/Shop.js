@@ -139,6 +139,18 @@ const Shop = ({ currency }) => {
     return PRODUCTS[filter] || [];
   };
 
+  const handleBuyNow = (product) => {
+    if (currency === 'USD') {
+      const isOnSale = product.title === popularConfig.onSaleProduct.title;
+      const basePrice = isOnSale ? popularConfig.onSaleProduct.discountedPrice.INR : product.price.INR;
+      const amount = roundToNearest5Ceil(basePrice * exchangeRate);
+      const description = product.title === "TradingView Indicators" ? product.title : `${product.title} Course`
+      const wiseUrl = `https://wise.com/pay/business/diliprajkumar1?amount=${amount}&currency=USD&description=${description}`;
+      window.location.href = wiseUrl;
+    }
+    // Add handling for INR payments if needed
+  };
+
   return (
     <section id="shop" className="py-20 px-4 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto">
@@ -199,7 +211,10 @@ const Shop = ({ currency }) => {
                       </span>
                     )}
                   </div>
-                  <button className="w-full bg-foreground text-background py-2 rounded-lg hover:opacity-90 hover:text-blue-400 transition-all">
+                  <button 
+                    onClick={() => handleBuyNow(product)}
+                    className="w-full bg-foreground text-background py-2 rounded-lg hover:opacity-90 hover:text-blue-400 transition-all"
+                  >
                     Buy Now
                   </button>
                   <button 
