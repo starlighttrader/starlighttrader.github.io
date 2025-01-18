@@ -36,9 +36,11 @@ const ProductModal = ({ product, onClose }) => {
               {getDetailedDescription(product)}
             </p>
 
-            {/* What You'll Learn */}
+            {/* What You'll Learn / What You'll Get Section */}
             <div>
-              <h3 className="text-xl font-semibold mb-3">What You'll Learn</h3>
+              <h3 className="text-xl font-semibold mb-3">
+                {product.type === 'indicators' ? "What You'll Get" : "What You'll Learn"}
+              </h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {product.fullDescription.map((item, index) => (
                   <li key={index} className="flex items-start">
@@ -59,7 +61,7 @@ const ProductModal = ({ product, onClose }) => {
                   <>
                     <div>
                       <p className="font-semibold">Duration</p>
-                      <p>{product.title === 'StarLightTrader Pro' ? '6 weeks' : '4 weeks'}</p>
+                      <p>{product.title === 'StarLightTrader Pro' ? '12 weeks' : '4 weeks'}</p>
                     </div>
                     <div>
                       <p className="font-semibold">Level</p>
@@ -71,7 +73,7 @@ const ProductModal = ({ product, onClose }) => {
                   <p className="font-semibold">Support</p>
                   <p>
                     {product.title === 'StarLightTrader Pro' 
-                      ? 'Discord (12 months access)'
+                      ? 'Discord (3 months access)'
                       : 'Discord | Email'}
                   </p>
                 </div>

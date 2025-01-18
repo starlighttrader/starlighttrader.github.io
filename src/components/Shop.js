@@ -14,20 +14,20 @@ const PRODUCTS = {
   courses: [
     {
       title: "Western FinAstro Concepts",
-      shortDescription: "Learn W.D. Gann's methods and astronomical cycles for market analysis.",
+      shortDescription: "Learn financial astrology methods of W.D Gann, McWhirter and astronomical cycles for market analysis.",
       fullDescription: [
-        "WD Gann Square of 9",
+        "Gann Square of 9",
         "Gann Price Levels",
         "Astrological Turn Dates",
         "McWhirter and Benner Cycles",
         "Time and Price Relationships",
-        "Includes 2 TradingView indicators (TPP, GMPL) and Excel Spreadsheets",
-        "Course Delivery via Weekly Zoom Live Sessions (4 hrs per week)",
+        "Includes 2 TradingView indicators (TPP, GAL) and Excel Spreadsheets",
+        "Course Delivery via Weekly Zoom Live Sessions",
         "Discord Community for course duration for anytime Q&A and support",
       ],
       price: { INR: 30000 },
       type: "courses",
-      videoUrl: "https://www.youtube.com/embed/abc123"
+      videoUrl: "https://www.youtube.com/embed/FwdqzcEPtls"
     },
     {
       title: "Vedic Financial Astrology",
@@ -39,12 +39,12 @@ const PRODUCTS = {
         "Market Timing Techniques",
         "Access to 2 TradingView indicators (Planetary Sign Transits and Aspects)",
         "Case Studies and Examples",
-        "Course Delivery via Weekly Zoom Live Sessions (4 hrs per week)",
+        "Course Delivery via Weekly Zoom Live Sessions",
         "Discord Community for course duration for anytime Q&A and support"
       ],
       price: { INR: 30000 },
       type: "courses",
-      videoUrl: "https://www.youtube.com/embed/def456"
+      videoUrl: "https://www.youtube.com/embed/8lkHUrclA2M"
     }
   ],
   indicators: [
@@ -53,7 +53,7 @@ const PRODUCTS = {
       shortDescription: "Professional astrological indicators built using PineScript for TradingView platform.",
       fullDescription: [
         "Time and Price Projection (TPP)",
-        "Gann Major Price Levels (GMPL)",
+        "Gann Astro Lines (GAL)",
         "Planetary Sign Transits and Retrograde periods",
         "Planetary Aspects",
         "LifeTime access to indicator updates",
@@ -61,7 +61,7 @@ const PRODUCTS = {
       ],
       price: { INR: 35000 },
       type: "indicators",
-      videoUrl: "https://www.youtube.com/embed/ghi789"
+      videoUrl: "https://www.youtube.com/embed?listType=playlist&list=PLlAwc_Rsq3jAcEe9FrGcRnxq-UJk7MHlF"
     }
   ],
   bundles: [
@@ -72,12 +72,13 @@ const PRODUCTS = {
         "All Western & Vedic FinAstro course content",
         "All 4 TradingView Indicators",        
         "BONUS - Trading Psychology & Risk Management Module",
-        "Course Delivery via Weekly Zoom Live Sessions (4 hrs per week)",
-        "Discord Community access and Trade Idea Service for 12 months",
+        "BONUS - Free Personal Report on Incompatible Lunar Transits",
+        "Course Delivery via Zoom Live Sessions",
+        "Discord Community access for 3 months",
       ],
       price: { INR: 60000 },
       type: "bundles",
-      videoUrl: "https://www.youtube.com/embed/jkl012"
+      videoUrl: "https://www.youtube.com/embed/0BmaHs04tAE"
     }
   ]
 };
@@ -175,14 +176,14 @@ const Shop = ({ currency }) => {
             
             return (
               <CardWrapper key={product.title} className="w-full relative">
-                <div className="bg-background rounded-lg shadow-lg p-6 flex flex-col h-full">
-                  <h3 className="text-xl font-bold mb-4 text-center">
+                <div className={`bg-background rounded-lg shadow-lg p-6 flex flex-col h-full ${filter === 'courses' ? 'min-h-[320px]' : ''}`}>
+                  <h3 className="text-lg font-bold mb-4 text-center">
                     {product.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">
+                  <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow">
                     {product.shortDescription}
                   </p>
-                  <div className="text-center mb-4">
+                  <div className="text-center mb-3">
                     {isOnSale ? (
                       <>
                         <span className="text-lg line-through text-red-500 mb-1 block">
