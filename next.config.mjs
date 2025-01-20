@@ -5,6 +5,10 @@ const nextConfig = {
   output: isProd ? 'export' : undefined,
   images: { unoptimized: true},
   trailingSlash: true,
+  env: {
+    NEXT_PUBLIC_SLT_TGBOT_TOKEN: process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN,
+    NEXT_PUBLIC_SLT_TG_USERID: process.env.NEXT_PUBLIC_SLT_TG_USERID,
+  },
 };
 
 export default nextConfig;

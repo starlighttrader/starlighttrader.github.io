@@ -28,8 +28,13 @@ junit.xml
 public/sw.js
 public/workbox-*.js
 
-# misc
+# macOS system files
 .DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+
+# misc
 *.pem
 Thumbs.db
 desktop.ini

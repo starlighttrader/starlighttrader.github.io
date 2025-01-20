@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ProductModal from './ProductModal';
 import PopularCard from './PopularCard';
+import UserDetailsModal from './UserDetailsModal';
 import popularConfig from '../config/CustomizeProduct.json';
 
 const EXCHANGE_RATE_API = 'https://api.exchangerate-api.com/v4/latest/INR';
@@ -88,6 +89,18 @@ const Shop = ({ currency }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [exchangeRate, setExchangeRate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
+  const [selectedProductForPurchase, setSelectedProductForPurchase] = useState(null);
+  const [userDetails, setUserDetails] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phoneNumber: '',
+    street: '',
+    city: '',
+    zipCode: '',
+    country: ''
+  });
 
   useEffect(() => {
     const fetchExchangeRate = async () => {
@@ -140,15 +153,78 @@ const Shop = ({ currency }) => {
   };
 
   const handleBuyNow = (product) => {
-    if (currency === 'USD') {
-      const isOnSale = product.title === popularConfig.onSaleProduct.title;
-      const basePrice = isOnSale ? popularConfig.onSaleProduct.discountedPrice.INR : product.price.INR;
-      const amount = roundToNearest5Ceil(basePrice * exchangeRate);
-      const description = product.title === "TradingView Indicators" ? product.title : `${product.title} Course`
-      const wiseUrl = `https://wise.com/pay/business/diliprajkumar1?amount=${amount}&currency=USD&description=${description}`;
-      window.location.href = wiseUrl;
+    setSelectedProductForPurchase(product);
+    setShowUserDetailsModal(true);
+  };
+
+  const handleUserDetailsSubmit = async (e) => {
+    e.preventDefault();
+    
+    const isOnSale = selectedProductForPurchase.title === popularConfig.onSaleProduct.title;
+    const basePrice = isOnSale ? popularConfig.onSaleProduct.discountedPrice.INR : selectedProductForPurchase.price.INR;
+    const amount = roundToNearest5Ceil(basePrice * exchangeRate);
+
+    // Format message for Telegram with phone number
+    const message = `🛒 <b>New Purchase Request</b>\n\n` +
+      `<b>Product:</b> ${selectedProductForPurchase.title}\n` +
+      `<b>Amount:</b> $${amount}\n\n` +
+      `👤 <b><u>CUSTOMER DETAILS</u></b>:\n` +
+      `<b>Name:</b> ${userDetails.firstName} ${userDetails.lastName}\n` +
+      `<b>Email:</b> ${userDetails.email}\n` +
+      `<b>Mobile:</b> ${userDetails.phoneNumber || 'Not provided'}\n` +
+      `<b>Address:</b> ${userDetails.street}\n` +
+      `${userDetails.city}, ${userDetails.zipCode}\n` +
+      `${userDetails.country}\n\n` +
+      `<b>Timestamp:</b> ${new Date().toLocaleString()}`;
+
+    try {
+      // Verify environment variables are available
+      if (!process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN || !process.env.NEXT_PUBLIC_SLT_TG_USERID) {
+        console.error('Missing environment variables:', {
+          token: !!process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN,
+          userId: !!process.env.NEXT_PUBLIC_SLT_TG_USERID
+        });
+        throw new Error('Telegram configuration is missing');
+      }
+
+      const telegramUrl = `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN}/sendMessage`;
+      const response = await fetch(telegramUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: process.env.NEXT_PUBLIC_SLT_TG_USERID,
+          text: message,
+          parse_mode: 'HTML'
+        })
+      });
+
+      const responseData = await response.json();
+      
+      if (!response.ok) {
+        console.error('Telegram API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          response: responseData
+        });
+        throw new Error(`Telegram API request failed: ${responseData.description || response.statusText}`);
+      }
+
+      // Generate payment URLs but don't redirect automatically
+      const wiseDescription = `${selectedProductForPurchase.title}${selectedProductForPurchase.title === "TradingView Indicators" ? '' : ' Course'}`;
+      const wiseUrl = `https://wise.com/pay/business/diliprajkumar1?amount=${amount}&currency=USD&description=${encodeURIComponent(wiseDescription)}`;
+      
+      // Open the payment URL in a new tab
+      window.open(wiseUrl, '_blank', 'noopener,noreferrer');
+      
+      // Close the modal
+      setShowUserDetailsModal(false);
+
+    } catch (error) {
+      console.error('Detailed error:', error);
+      alert(`Error processing request: ${error.message}. Please try again or contact support.`);
     }
-    // Add handling for INR payments if needed
   };
 
   return (
@@ -232,6 +308,16 @@ const Shop = ({ currency }) => {
           })}
         </div>
       </div>
+
+      {showUserDetailsModal && (
+        <UserDetailsModal
+          userDetails={userDetails}
+          setUserDetails={setUserDetails}
+          onSubmit={handleUserDetailsSubmit}
+          onClose={() => setShowUserDetailsModal(false)}
+          currency={currency}
+        />
+      )}
 
       {selectedProduct && (
         <ProductModal 
