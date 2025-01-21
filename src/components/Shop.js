@@ -185,7 +185,7 @@ const Shop = ({ currency }) => {
       const wiseUrl = `https://wise.com/pay/business/diliprajkumar1?amount=${amount}&currency=USD&description=${encodeURIComponent(wiseDescription)}`;
       
       // Open the payment URL in a new tab
-      window.open(wiseUrl, '_blank', 'noopener,noreferrer');
+      window.open(wiseUrl);
       
       // Close the modal
       setShowUserDetailsModal(false);
