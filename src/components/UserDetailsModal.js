@@ -5,16 +5,84 @@ const UserDetailsModal = ({
   setUserDetails, 
   onSubmit, 
   onClose,
-  currency
+  currency,
+  amount,
+  selectedProductForPurchase
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const sendTelegramNotification = async () => {
+    const message = `🛒 <b>New Purchase Request</b>\n\n` +
+      `<b>Product:</b> ${selectedProductForPurchase.title}\n` +
+      `<b>Amount:</b> ${currency === 'USD' ? '$' : '₹'}${amount}\n\n` +
+      `👤 <b><u>CUSTOMER DETAILS</u></b>:\n` +
+      `<b>Name:</b> ${userDetails.firstName} ${userDetails.lastName}\n` +
+      `<b>Email:</b> ${userDetails.email}\n` +
+      `<b>Mobile:</b> ${userDetails.phoneNumber || 'Not provided'}\n` +
+      `<b>Address:</b> ${userDetails.street}\n` +
+      `${userDetails.city}, ${userDetails.zipCode}\n` +
+      `${userDetails.country}\n\n` +
+      `<b>Timestamp:</b> ${new Date().toLocaleString()}`;
+
+    if (!process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN || !process.env.NEXT_PUBLIC_SLT_TG_USERID) {
+      throw new Error('Telegram configuration is missing');
+    }
+
+    const telegramUrl = `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN}/sendMessage`;
+    const telegramResponse = await fetch(telegramUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: process.env.NEXT_PUBLIC_SLT_TG_USERID,
+        text: message,
+        parse_mode: 'HTML'
+      })
+    });
+
+    if (!telegramResponse.ok) {
+      throw new Error('Failed to send Telegram notification');
+    }
+  };
+
   const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsSubmitting(true);
+    
     try {
-      await onSubmit(e);
+      // Send Telegram notification first
+      await sendTelegramNotification();
+
+      if (currency === 'USD') {
+        // Existing Wise payment logic
+        await onSubmit(e);
+      } else {
+        // PhonePe payment logic
+        const response = await fetch('/api/phonepe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: amount,
+            userDetails: userDetails,
+            productTitle: selectedProductForPurchase.title
+          })
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          // Redirect to PhonePe payment page
+          window.location.href = data.redirectUrl;
+        } else {
+          throw new Error(data.message || 'Payment initialization failed');
+        }
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Payment Error:', error);
+      alert('Payment initialization failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

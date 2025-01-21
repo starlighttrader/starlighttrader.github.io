@@ -91,6 +91,7 @@ const Shop = ({ currency }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
   const [selectedProductForPurchase, setSelectedProductForPurchase] = useState(null);
+  const [amount, setAmount] = useState(null);
   const [userDetails, setUserDetails] = useState({
     firstName: '',
     lastName: '',
@@ -153,6 +154,11 @@ const Shop = ({ currency }) => {
   };
 
   const handleBuyNow = (product) => {
+    const isOnSale = product.title === popularConfig.onSaleProduct.title;
+    const basePrice = isOnSale ? popularConfig.onSaleProduct.discountedPrice.INR : product.price.INR;
+    const calculatedAmount = currency === 'USD' ? roundToNearest5Ceil(basePrice * exchangeRate) : basePrice;
+    
+    setAmount(calculatedAmount);
     setSelectedProductForPurchase(product);
     setShowUserDetailsModal(true);
   };
@@ -162,67 +168,16 @@ const Shop = ({ currency }) => {
     
     const isOnSale = selectedProductForPurchase.title === popularConfig.onSaleProduct.title;
     const basePrice = isOnSale ? popularConfig.onSaleProduct.discountedPrice.INR : selectedProductForPurchase.price.INR;
-    const amount = roundToNearest5Ceil(basePrice * exchangeRate);
-
-    // Format message for Telegram with phone number
-    const message = `🛒 <b>New Purchase Request</b>\n\n` +
-      `<b>Product:</b> ${selectedProductForPurchase.title}\n` +
-      `<b>Amount:</b> $${amount}\n\n` +
-      `👤 <b><u>CUSTOMER DETAILS</u></b>:\n` +
-      `<b>Name:</b> ${userDetails.firstName} ${userDetails.lastName}\n` +
-      `<b>Email:</b> ${userDetails.email}\n` +
-      `<b>Mobile:</b> ${userDetails.phoneNumber || 'Not provided'}\n` +
-      `<b>Address:</b> ${userDetails.street}\n` +
-      `${userDetails.city}, ${userDetails.zipCode}\n` +
-      `${userDetails.country}\n\n` +
-      `<b>Timestamp:</b> ${new Date().toLocaleString()}`;
+    const amount = currency === 'USD' ? roundToNearest5Ceil(basePrice * exchangeRate) : basePrice;
 
     try {
-      // Verify environment variables are available
-      if (!process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN || !process.env.NEXT_PUBLIC_SLT_TG_USERID) {
-        console.error('Missing environment variables:', {
-          token: !!process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN,
-          userId: !!process.env.NEXT_PUBLIC_SLT_TG_USERID
-        });
-        throw new Error('Telegram configuration is missing');
-      }
-
-      const telegramUrl = `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN}/sendMessage`;
-      const response = await fetch(telegramUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chat_id: process.env.NEXT_PUBLIC_SLT_TG_USERID,
-          text: message,
-          parse_mode: 'HTML'
-        })
-      });
-
-      const responseData = await response.json();
+      // All payment and notification logic is now handled in UserDetailsModal
+      await onSubmit(e);
       
-      if (!response.ok) {
-        console.error('Telegram API Error:', {
-          status: response.status,
-          statusText: response.statusText,
-          response: responseData
-        });
-        throw new Error(`Telegram API request failed: ${responseData.description || response.statusText}`);
-      }
-
-      // Generate payment URLs but don't redirect automatically
-      const wiseDescription = `${selectedProductForPurchase.title}${selectedProductForPurchase.title === "TradingView Indicators" ? '' : ' Course'}`;
-      const wiseUrl = `https://wise.com/pay/business/diliprajkumar1?amount=${amount}&currency=USD&description=${encodeURIComponent(wiseDescription)}`;
-      
-      // Open the payment URL in a new tab
-      window.open(wiseUrl, '_blank', 'noopener,noreferrer');
-      
-      // Close the modal
+      // Close the modal on success
       setShowUserDetailsModal(false);
-
     } catch (error) {
-      console.error('Detailed error:', error);
+      console.error('Payment Error:', error);
       alert(`Error processing request: ${error.message}. Please try again or contact support.`);
     }
   };
@@ -316,6 +271,8 @@ const Shop = ({ currency }) => {
           onSubmit={handleUserDetailsSubmit}
           onClose={() => setShowUserDetailsModal(false)}
           currency={currency}
+          amount={amount}
+          selectedProductForPurchase={selectedProductForPurchase}
         />
       )}
 
