@@ -22,17 +22,52 @@ const CurrencySelector = ({ currency: propCurrency, setCurrency: setPropCurrency
     useEffect(() => {
         const detectCurrency = async () => {
             try {
-                const response = await fetch('https://ipapi.co/json/');
+                // Check localStorage first
+                const savedCurrency = localStorage.getItem('preferredCurrency');
+                if (savedCurrency && CURRENCIES[savedCurrency]) {
+                    setPropCurrency(savedCurrency);
+                    return;
+                }
+
+                // If no saved preference, detect based on location
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+                const response = await fetch('https://ipapi.co/json/', {
+                    signal: controller.signal,
+                    headers: {
+                        'Accept': 'application/json',
+                        'User-Agent': 'StarLightTrader/1.0'
+                    }
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch location data');
+                }
+
                 const data = await response.json();
-                setPropCurrency(data.country === 'IN' ? 'INR' : 'USD');
+                const detectedCurrency = data.country === 'IN' ? 'INR' : 'USD';
+                setPropCurrency(detectedCurrency);
+                localStorage.setItem('preferredCurrency', detectedCurrency);
+
             } catch (error) {
                 console.error('Error detecting currency:', error);
-                setPropCurrency('USD'); // Default to USD if detection fails
+                // Default to USD and save to localStorage
+                setPropCurrency('USD');
+                localStorage.setItem('preferredCurrency', 'USD');
             }
         };
 
         detectCurrency();
     }, [setPropCurrency]);
+
+    const handleCurrencyChange = (code) => {
+        setPropCurrency(code);
+        localStorage.setItem('preferredCurrency', code);
+        setIsOpen(false);
+    };
 
     return (
         <div className="relative group">
@@ -50,10 +85,7 @@ const CurrencySelector = ({ currency: propCurrency, setCurrency: setPropCurrency
                     {Object.entries(CURRENCIES).map(([code, { flag, label }]) => (
                         <button 
                             key={code}
-                            onClick={() => {
-                                setPropCurrency(code)
-                                setIsOpen(false)
-                            }}
+                            onClick={() => handleCurrencyChange(code)}
                             className="flex items-center gap-2 w-full px-4 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-800"
                         >
                             <span>{flag}</span>

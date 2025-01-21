@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Shop from "@/components/Shop";
@@ -18,14 +18,42 @@ export default function Home() {
   const [currency, setCurrency] = useState('USD');
 
   useEffect(() => {
-    // Detect user's location and set currency
+    // Check localStorage for saved currency preference
+    const savedCurrency = localStorage.getItem('preferredCurrency');
+    if (savedCurrency && (savedCurrency === 'USD' || savedCurrency === 'INR')) {
+      setCurrency(savedCurrency);
+      return;
+    }
+
+    // If no saved preference, detect based on location
     const detectCurrency = async () => {
       try {
-        const response = await fetch('https://ipapi.co/json/');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch('https://ipapi.co/json/', {
+          signal: controller.signal,
+          headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'StarLightTrader/1.0'
+          }
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch location data');
+        }
+
         const data = await response.json();
-        setCurrency(data.country === 'IN' ? 'INR' : 'USD');
+        const detectedCurrency = data.country === 'IN' ? 'INR' : 'USD';
+        setCurrency(detectedCurrency);
+        localStorage.setItem('preferredCurrency', detectedCurrency);
       } catch (error) {
         console.error('Error detecting location:', error);
+        // Default to USD and save preference
+        setCurrency('USD');
+        localStorage.setItem('preferredCurrency', 'USD');
       }
     };
 

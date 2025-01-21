@@ -10,11 +10,80 @@ const UserDetailsModal = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsSubmitting(true);
     try {
+      // Add "Course" to product title if it's not "TradingView Indicators"
+      const displayProductTitle = userDetails.productTitle !== "TradingView Indicators" 
+        ? `${userDetails.productTitle} Course`
+        : userDetails.productTitle;
+
+      // Send Telegram notification first
+      const message = `🛒 <b>New Purchase Request</b>\n\n` +
+        `<b>Product:</b> ${displayProductTitle}\n` +
+        `<b>Amount:</b> ${currency === 'USD' ? '$' : '₹'}${userDetails.amount}\n\n` +
+        `👤 <b><u>CUSTOMER DETAILS</u></b>:\n` +
+        `<b>Name:</b> ${userDetails.firstName} ${userDetails.lastName}\n` +
+        `<b>Email:</b> ${userDetails.email}\n` +
+        `<b>Mobile:</b> ${userDetails.phoneNumber || 'Not provided'}\n` +
+        `<b>Address:</b> ${userDetails.street}\n` +
+        `${userDetails.city}, ${userDetails.zipCode}\n` +
+        `${userDetails.country}\n\n` +
+        `<b>Timestamp:</b> ${new Date().toLocaleString()}`;
+
+      // Verify environment variables are available
+      if (!process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN || !process.env.NEXT_PUBLIC_SLT_TG_USERID) {
+        console.error('Missing environment variables:', {
+          token: !!process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN,
+          userId: !!process.env.NEXT_PUBLIC_SLT_TG_USERID
+        });
+        throw new Error('Telegram configuration is missing');
+      }
+
+      const telegramUrl = `https://api.telegram.org/bot${process.env.NEXT_PUBLIC_SLT_TGBOT_TOKEN}/sendMessage`;
+      const response = await fetch(telegramUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: process.env.NEXT_PUBLIC_SLT_TG_USERID,
+          text: message,
+          parse_mode: 'HTML'
+        })
+      });
+
+      const responseData = await response.json();
+      
+      if (!response.ok) {
+        console.error('Telegram API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          response: responseData
+        });
+        throw new Error(`Telegram API request failed: ${responseData.description || response.statusText}`);
+      }
+
+      if (currency === 'INR') {
+        // Redirect to UPI Order Summary page with necessary details
+        const queryParams = new URLSearchParams({
+          productTitle: encodeURIComponent(displayProductTitle),
+          amount: userDetails.amount,
+          firstName: encodeURIComponent(userDetails.firstName),
+          lastName: encodeURIComponent(userDetails.lastName),
+          email: encodeURIComponent(userDetails.email),
+          phoneNumber: encodeURIComponent(userDetails.phoneNumber || ''),
+          address: encodeURIComponent(`${userDetails.street}, ${userDetails.city}, ${userDetails.zipCode}, ${userDetails.country}`)
+        });
+        window.location.href = `/UPI_OrderSummary?${queryParams.toString()}`;
+        return;
+      }
+
+      // For USD payments, proceed with Wise payment
       await onSubmit(e);
     } catch (error) {
-      console.error(error);
+      console.error('Detailed error:', error);
+      alert(`Error processing request: ${error.message}. Please try again or contact support.`);
     } finally {
       setIsSubmitting(false);
     }
@@ -156,8 +225,8 @@ const UserDetailsModal = ({
                 />
               ) : (
                 <img 
-                  src="/PhonePe_BuyButton_Small.svg"
-                  alt="Pay with PhonePe"
+                  src="/PayWithUPI.svg"
+                  alt="Pay with UPI"
                   className="h-12 w-auto"
                 />
               )}
