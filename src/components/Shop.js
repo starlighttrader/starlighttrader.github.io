@@ -292,6 +292,7 @@ const Shop = ({ currency }) => {
         <ProductModal 
           product={selectedProduct} 
           onClose={() => setSelectedProduct(null)}
+          showGroupDiscount={selectedProduct.title === "StarLightTrader Pro"}
         />
       )}
     </section>

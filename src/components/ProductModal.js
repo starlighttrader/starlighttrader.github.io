@@ -1,4 +1,4 @@
-const ProductModal = ({ product, onClose }) => {
+const ProductModal = ({ product, onClose, showGroupDiscount }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-background rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
@@ -52,6 +52,12 @@ const ProductModal = ({ product, onClose }) => {
                 ))}
               </ul>
             </div>
+
+            {showGroupDiscount && (
+              <p className="mt-4 mb-6 text-sm text-green-600 dark:text-green-400 italic text-center">
+                Special discounts for group purchase (minimum 5 members)
+              </p>
+            )}
 
             {/* Additional Information */}
             <div>
