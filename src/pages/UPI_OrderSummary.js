@@ -99,23 +99,55 @@ const UPI_OrderSummary = () => {
               {qrCode && (
                 <div className="mb-6">
                   <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">Scan QR Code below in any UPI app to Pay</p>
-                  <div className="flex justify-center">
+                  
+                  {/* UPI Apps Logos */}
+                  <div className="flex justify-center items-center gap-8 mt-4 mb-4">
+                    <Image
+                      src="/gpay-logo.svg"
+                      alt="Google Pay"
+                      width={80}
+                      height={30}
+                      className="object-contain"
+                    />
+                    <Image
+                      src="/paytm-logo.svg"
+                      alt="Paytm"
+                      width={80}
+                      height={30}
+                      className="object-contain"
+                    />
+                    <Image
+                      src="/phonepe-logo.svg"
+                      alt="PhonePe"
+                      width={100}
+                      height={40}
+                      className="object-contain"
+                    />
+                    <Image
+                      src="/bhim-logo.svg"
+                      alt="BHIM UPI"
+                      width={80}
+                      height={30}
+                      className="object-contain"
+                    />
+                  </div>
+
+                  <div className="flex flex-col items-center">
                     <img 
                       src={qrCode} 
                       alt="UPI QR Code" 
                       className="w-[400px] h-[400px]" 
                       style={{ maxWidth: '100%' }}
                     />
+                    <div className="mt-2">
+                      <strong>UPI ID:</strong> 
+                      <div className="bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-lg inline-block">
+                        <p className="font-medium">{UPI_ID}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
-            </div>
-
-            <div className="mt-4">
-              <strong>UPI ID:</strong> 
-              <div className="bg-gray-100 dark:bg-gray-700 py-2 px-4 rounded-lg inline-block">
-                <p className="font-medium">{UPI_ID}</p>
-              </div>
             </div>
 
             <div className="mt-6 text-left">
@@ -135,7 +167,7 @@ const UPI_OrderSummary = () => {
             {showWhatsAppQR && (
               <div className="p-4 mt-6">
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Scan the below WhatsApp QR Code to send the payment screenshot along with your name and email-ID.
+                  Scan the below WhatsApp QR Code in your WhatsApp app camera to send the payment screenshot (containing the transaction ID), along with your name and email-ID.
                 </p>
                 <div className="flex justify-center">
                   <Image
