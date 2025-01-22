@@ -70,7 +70,7 @@ const PopularCard = ({ children, className }) => {
         </div>
       </div>
       <div className="absolute -top-3 -right-3 z-10 bg-gradient-to-r from-gemini-blue to-gemini-pink text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
-        Most Popular
+        Best Value
       </div>
     </div>
   );
