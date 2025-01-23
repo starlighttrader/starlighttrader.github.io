@@ -22,7 +22,7 @@ const PRODUCTS = {
         "Astrological Turn Dates",
         "McWhirter and Benner Cycles",
         "Time and Price Relationships",
-        "Includes 2 TradingView indicators (TPP, GAL) and Excel Spreadsheets",
+        "LifeTime access to 2 TradingView indicators (TPP, GAL) and Excel Spreadsheets",
         "Course Delivery via Weekly Zoom Live Sessions",
         "Discord Community for course duration for anytime Q&A and support",
       ],
@@ -38,7 +38,7 @@ const PRODUCTS = {
         "Planetary Transits and Market Impact",
         "Planetary Aspects and Reversal Points",
         "Market Timing Techniques",
-        "Access to 2 TradingView indicators (Planetary Sign Transits and Aspects)",
+        "LifeTime access to 2 TradingView indicators (Planetary Sign Transits and Aspects)",
         "Case Studies and Examples",
         "Course Delivery via Weekly Zoom Live Sessions",
         "Discord Community for course duration for anytime Q&A and support"
@@ -71,7 +71,7 @@ const PRODUCTS = {
       shortDescription: "Comprehensive package bundle combining Western & Vedic methodologies course content along with all our TradingView indicators.",
       fullDescription: [
         "All Western & Vedic FinAstro course content",
-        "All 4 TradingView Indicators",        
+        "All 4 TradingView Indicators (Lifetime access)",        
         "BONUS - Trading Psychology & Risk Management Module",
         "BONUS - Free Personal Report on Incompatible Lunar Transits",
         "Course Delivery via Zoom Live Sessions",
