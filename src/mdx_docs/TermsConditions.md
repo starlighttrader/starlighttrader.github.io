@@ -2,7 +2,7 @@
 
 ## 1. Educational Purpose Only
 
-All content provided through [**StarLightTrader**](https://starlighttrader.github.io/), including but not limited to course materials, indicators, trading ideas, and Discord community messages, is for educational and informational purposes only. This information does not constitute financial advice, investment advice, trading advice, or any other sort of professional advice.
+All content provided through [**StarLightTrader**](https://starlighttrader.github.io/), including but not limited to course materials, indicators, historical trading ideas, and Discord community messages, is for educational and informational purposes only. This information does not constitute financial advice, investment advice, trading advice, or any other sort of professional advice.
 
 ## 2. No Financial Advice
 
