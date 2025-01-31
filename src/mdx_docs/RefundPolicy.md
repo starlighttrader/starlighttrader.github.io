@@ -26,7 +26,7 @@ To request a refund:
 
 - Contact our support team through the contact form
 - Provide your order number and reason for the refund
-- Refunds are typically processed within 5-7 business days
+- Refunds are processed within 5-7 business days, which will get credited within 7 - 10 business days into your source payment account.
 - The final refund amount may be reduced by any applicable payment processing fees or charges levied by the payment provider (Stripe, PayPal, CashFree etc.)
 
 ## 5. Exceptions
@@ -39,4 +39,4 @@ We reserve the right to:
 
 ## 6. Contact Us
 
-If you have questions about our refund policy or need to request a refund, please contact us through our [contact form](https://starlighttrader.github.io/#contact).
+If you have questions about our refund policy or need to request a refund, please contact us through our [contact form](https://starlighttrader.github.io/#contact). For urgent queries, please send an email to starlighttrader365@gmail.com or reach out to **Dilip Rajkumar** on [Whatsapp](https://wa.me/918925375889).
