@@ -64,3 +64,13 @@ We may update this Privacy Policy periodically. We will notify you of any materi
 ## 9. Contact Us
 
 If you have questions about this Privacy Policy, please contact us through our [contact form](https://starlighttrader.github.io/#contact).
+
+---
+
+<div align="center">
+<small color="#666">
+
+[Home](https://starlighttrader.github.io/) | [FAQs](/legal/FAQs) | [Refund Policy](/legal/RefundPolicy) | [Terms & Conditions](/legal/TermsConditions)
+
+</small>
+</div>

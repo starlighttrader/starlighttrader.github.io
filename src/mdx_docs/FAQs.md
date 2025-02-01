@@ -64,3 +64,13 @@
 - ### How far back does your historical data go?
     
     Our planetary data indicators include 25 years of historical data, allowing for comprehensive back-testing and analysis. More data will also be added in future.
+
+---
+
+<div align="center">
+<small color="#666">
+
+[Home](https://starlighttrader.github.io/) | [Privacy Policy](/legal/PrivacyPolicy) | [Refund Policy](/legal/RefundPolicy) | [Terms & Conditions](/legal/TermsConditions)
+
+</small>
+</div>

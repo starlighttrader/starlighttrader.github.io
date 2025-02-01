@@ -40,3 +40,13 @@ We reserve the right to:
 ## 6. Contact Us
 
 If you have questions about our refund policy or need to request a refund, please contact us through our [contact form](https://starlighttrader.github.io/#contact). For urgent queries, please send an email to `starlighttrader365(a)gmail.com` or reach out to **Dilip Rajkumar** on [Whatsapp](https://wa.me/918925375889).
+
+---
+
+<div align="center">
+<small color="#666">
+
+[Home](https://starlighttrader.github.io/) | [FAQs](/legal/FAQs) | [Privacy Policy](/legal/PrivacyPolicy) | [Terms & Conditions](/legal/TermsConditions)
+
+</small>
+</div>

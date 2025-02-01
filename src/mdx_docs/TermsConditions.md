@@ -41,3 +41,13 @@ By purchasing our products or joining our community, you acknowledge that you ha
 
 🔴 **TRADING DISCLAIMER:** 
 > Trading financial instruments carries a high level of risk to your capital with the possibility of losing more than your initial investment. You should trade only with funds you can afford to lose. Trading may not be suitable for all investors, so please ensure you fully understand the risks involved and seek independent advice if necessary.
+
+---
+
+<div align="center">
+<small color="#666">
+
+[Home](https://starlighttrader.github.io/) | [FAQs](/legal/FAQs) | [Privacy Policy](/legal/PrivacyPolicy) | [Refund Policy](/legal/RefundPolicy)
+
+</small>
+</div>
