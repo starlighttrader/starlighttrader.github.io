@@ -26,7 +26,7 @@ To request a refund:
 
 - Contact our support team through the contact form
 - Provide your order number and reason for the refund
-- Refunds are processed within 5-7 business days, which will get credited within 7 - 10 business days into your source payment account.
+- Refunds requests are processed within 2-3 business days. Thereafter, refunds will get credited within 7 - 10 business days into your source payment account.
 - The final refund amount may be reduced by any applicable payment processing fees or charges levied by the payment provider (Wise, PayPal, PhonePe etc.)
 
 ## 5. Exceptions
