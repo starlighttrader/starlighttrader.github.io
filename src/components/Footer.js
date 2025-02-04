@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { User, Phone, Mail } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -138,7 +139,24 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+          <div className="flex items-center md:justify-start justify-center space-x-2">
+            <User size={16} className="text-gray-400" />
+            <span className="text-sm font-light">Dilip Rajkumar</span>
+          </div>
+          <div className="flex items-center md:justify-start justify-center space-x-2">
+            <Phone size={16} className="text-gray-400" />
+            <span className="text-sm font-light">+91-8925375889</span>
+          </div>
+          <div className="flex items-center md:justify-start justify-center space-x-2">
+            <Mail size={16} className="text-gray-400" />
+            <span className="text-sm font-light" >starlighttrader365(a)gmail.com</span>
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="border-t border-gray-800 mt-2 pt-4 text-center">
           <p className="text-sm">
             © {currentYear} StarLightTrader. All rights reserved.
           </p>
