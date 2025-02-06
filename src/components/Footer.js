@@ -140,7 +140,7 @@ const Footer = () => {
         </div>
 
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
           <div className="flex items-center md:justify-start justify-center space-x-2">
             <User size={16} className="text-gray-400" />
             <span className="text-sm font-light">Dilip Rajkumar</span>
@@ -153,7 +153,7 @@ const Footer = () => {
             <Mail size={16} className="text-gray-400" />
             <span className="text-sm font-light" >starlighttrader365(a)gmail.com</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-2 pt-4 text-center">
