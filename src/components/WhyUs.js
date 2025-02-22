@@ -16,7 +16,7 @@ const WhyUs = () => {
     },
     { 
       name: "QuantCopier", 
-      url: "#",
+      url: "https://quanttradertools.github.io/quantcopier",
       description: "Our in-house trade copier built for both Discord and Telegram",
       logo: "/QuantCopierLogo.png"
     }
