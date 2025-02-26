@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProductModal from './ProductModal';
 import PopularCard from './PopularCard';
-import UserDetailsModal from './UserDetailsModal';
 import popularConfig from '../config/CustomizeProduct.json';
 
 const EXCHANGE_RATE_API = 'https://api.exchangerate-api.com/v4/latest/INR';
@@ -15,6 +14,7 @@ const PRODUCTS = {
   courses: [
     {
       title: "Western FinAstro Concepts",
+      shortProductID: "WFC",
       shortDescription: "Learn financial astrology methods of W.D Gann, McWhirter and astronomical cycles for market analysis.",
       fullDescription: [
         "Gann Square of 9",
@@ -32,6 +32,7 @@ const PRODUCTS = {
     },
     {
       title: "Vedic Financial Astrology",
+      shortProductID: "VFA",
       shortDescription: "Learn traditional Vedic astrology concepts applied to modern markets.",
       fullDescription: [
         "Basic Vedic Astrology Concepts",
@@ -51,6 +52,7 @@ const PRODUCTS = {
   indicators: [
     {
       title: "TradingView Indicators",
+      shortProductID: "TVIND",
       shortDescription: "Professional astrological indicators built using PineScript for TradingView platform.",
       fullDescription: [
         "Time and Price Projection (TPP)",
@@ -68,6 +70,7 @@ const PRODUCTS = {
   bundles: [
     {
       title: "StarLightTrader Pro",
+      shortProductID: "SLTPRO",
       shortDescription: "Comprehensive package bundle combining Western & Vedic methodologies course content along with all our TradingView indicators.",
       fullDescription: [
         "All Western & Vedic FinAstro course content",
@@ -89,20 +92,6 @@ const Shop = ({ currency }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [exchangeRate, setExchangeRate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showUserDetailsModal, setShowUserDetailsModal] = useState(false);
-  const [selectedProductForPurchase, setSelectedProductForPurchase] = useState(null);
-  const [userDetails, setUserDetails] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    street: '',
-    city: '',
-    zipCode: '',
-    country: '',
-    productTitle: '',
-    amount: 0
-  });
 
   useEffect(() => {
     const fetchExchangeRate = async () => {
@@ -154,7 +143,25 @@ const Shop = ({ currency }) => {
     return PRODUCTS[filter] || [];
   };
 
-  const handleBuyNow = (product) => {
+  const generateOrderId = (product) => {
+    // Get the predefined shortProductID
+    const prefix = product.shortProductID;
+    
+    // Get current date time in DDMMYYYYHHMM format
+    const now = new Date();
+    const datetime = [
+      now.getDate().toString().padStart(2, '0'),
+      (now.getMonth() + 1).toString().padStart(2, '0'),
+      now.getFullYear(),
+      now.getHours().toString().padStart(2, '0'),
+      now.getMinutes().toString().padStart(2, '0')
+    ].join('');
+    
+    // Format as ABCD-XXYYZZ-DDMMYYYY
+    return `${prefix}-${datetime.slice(0,6)}${datetime.slice(6,14)}`;
+  };
+
+  const handleBuyNow = async (product) => {
     const isOnSale = product.title === popularConfig.onSaleProduct.title;
     const basePrice = isOnSale ? popularConfig.onSaleProduct.discountedPrice.INR : product.price.INR;
     
@@ -162,37 +169,44 @@ const Shop = ({ currency }) => {
     const finalAmount = currency === 'USD' 
         ? roundToNearest5Ceil(basePrice * exchangeRate)
         : basePrice;
-    
-    setSelectedProductForPurchase(product);
-    setUserDetails(prev => ({
-        ...prev,
-        productTitle: product.title,
-        amount: finalAmount
-    }));
-    setShowUserDetailsModal(true);
-  };
 
-  const handleUserDetailsSubmit = async (e) => {
-    e.preventDefault();
+    // Generate order ID using the product object
+    const orderId = generateOrderId(product);
     
-    const isOnSale = selectedProductForPurchase.title === popularConfig.onSaleProduct.title;
-    const basePrice = isOnSale ? popularConfig.onSaleProduct.discountedPrice.INR : selectedProductForPurchase.price.INR;
-    const amount = roundToNearest5Ceil(basePrice * exchangeRate);
-
     try {
-      // Generate payment URL for Wise
-      const wiseDescription = `${selectedProductForPurchase.title}${selectedProductForPurchase.title === "TradingView Indicators" ? '' : ' Course'}`;
-      const wiseUrl = `https://wise.com/pay/business/diliprajkumar1?amount=${amount}&currency=USD&description=${encodeURIComponent(wiseDescription)}`;
-      
-      // Open the payment URL in a new tab
-      window.open(wiseUrl);
-      
-      // Close the modal
-      setShowUserDetailsModal(false);
+      // Prepare request payload according to specified format
+      const payload = {
+        merchantID: process.env.NEXT_PUBLIC_EZPAYFLOW_MERCHANT_ID,
+        orderID: orderId,
+        item: `${product.title}${product.type === 'indicators' ? '' : ' Course'}`,
+        currency: currency,
+        totalAmount: finalAmount
+      };
 
+      // Make API call
+      const response = await fetch('https://ezpayflow.vercel.app/api/payment-validation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error('Payment validation failed');
+      }
+
+      const data = await response.json();
+
+      // Redirect to payment URL in current window
+      //  window.location.href = data.url;
+      
+      // Open payment URL in a new window
+      window.open(data.url, '_blank', 'noopener,noreferrer');
+      
     } catch (error) {
-      console.error('Detailed error:', error);
-      alert(`Error processing request: ${error.message}. Please try again or contact support.`);
+      console.error('Payment initialization error:', error);
+      alert('Failed to initialize payment. Please try again or contact support.');
     }
   };
 
@@ -277,16 +291,6 @@ const Shop = ({ currency }) => {
           })}
         </div>
       </div>
-
-      {showUserDetailsModal && (
-        <UserDetailsModal
-          userDetails={userDetails}
-          setUserDetails={setUserDetails}
-          onSubmit={handleUserDetailsSubmit}
-          onClose={() => setShowUserDetailsModal(false)}
-          currency={currency}
-        />
-      )}
 
       {selectedProduct && (
         <ProductModal 
