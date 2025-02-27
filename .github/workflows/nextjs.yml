@@ -77,6 +77,7 @@ jobs:
         env:
           NEXT_PUBLIC_SLT_TGBOT_TOKEN: ${{ secrets.NEXT_PUBLIC_SLT_TGBOT_TOKEN }}
           NEXT_PUBLIC_SLT_TG_USERID: ${{ secrets.NEXT_PUBLIC_SLT_TG_USERID }}
+          NEXT_PUBLIC_EZPAYFLOW_MERCHANT_ID: ${{ secrets.NEXT_PUBLIC_EZPAYFLOW_MERCHANT_ID }}
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
