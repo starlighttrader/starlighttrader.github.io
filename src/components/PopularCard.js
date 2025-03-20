@@ -38,6 +38,7 @@ const MovingBorder = ({
           height="100%"
           rx={rx}
           ry={ry}
+          className="stroke-none"
           ref={pathRef}
         />
       </svg>
@@ -62,14 +63,14 @@ const PopularCard = ({ children, className }) => {
       <div className="relative p-[1px] overflow-hidden rounded-lg">
         <div className="absolute inset-0">
           <MovingBorder duration={4000} rx="30%" ry="30%">
-            <div className="h-48 w-48 opacity-[0.8] bg-[radial-gradient(var(--sky-500)_40%,transparent_60%)]" />
+            <div className="h-48 w-48 opacity-[0.8] bg-[radial-gradient(hsl(var(--sky-500))_40%,transparent_60%)]" />
           </MovingBorder>
         </div>
         <div className="relative">
           {children}
         </div>
       </div>
-      <div className="absolute -top-3 -right-3 z-10 bg-gradient-to-r from-gemini-blue to-gemini-pink text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
+      <div className="absolute -top-3 -right-3 z-10 bg-gradient-to-r from-[hsl(var(--gemini-blue))] to-[hsl(var(--gemini-pink))] text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
         Best Value
       </div>
     </div>

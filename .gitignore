@@ -87,3 +87,6 @@ next-env.d.ts
 .cache/
 .temp/
 tmp/
+
+# Discount codes
+src/config/discountCodes.json

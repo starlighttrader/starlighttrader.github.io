@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Shop from "@/components/Shop";
 import WhyUs from "@/components/WhyUs";
-// import GoogleContact from "@/components/GoogleContact";
 import FillOutForm from "@/components/FillOutForm";
 import Footer from "@/components/Footer";
 

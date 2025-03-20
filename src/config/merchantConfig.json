@@ -1,0 +1,16 @@
+{
+    "logo": {
+      "dark": "https://pub-e86d1bd88e684c09b6853bb5eaa397e1.r2.dev/MIDSLT0001Dark.svg",
+      "light": "https://pub-e86d1bd88e684c09b6853bb5eaa397e1.r2.dev/MIDSLT0001Light.svg"
+    },
+    "contactPreference": {
+      "type": "whatsapp",
+      "qrCode": "https://pub-e86d1bd88e684c09b6853bb5eaa397e1.r2.dev/MIDSLT0001WhatsApp.png",
+      "url": "wa.me/918925375889"
+    },
+    "homepageUrl": "https://starlighttrader.github.io",
+    "preferred_payment_providers": {
+      "USD": ["Wise"],
+      "INR": ["UPI"]
+    }
+  }

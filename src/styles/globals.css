@@ -2,15 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sky-500: 199 89% 48%;
+    --gemini-blue: 207 90% 54%;
+    --gemini-pink: 330 81% 60%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sky-500: 199 89% 48%;
+    --gemini-blue: 207 90% 54%;
+    --gemini-pink: 330 81% 60%;
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-[hsl(var(--border))];
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
@@ -93,4 +154,130 @@ body {
 
 .prose pre code {
   @apply bg-transparent text-red-600;
+}
+
+/* Dark mode specific overrides */
+.dark h2 {
+  color: white;
+}
+
+.dark h3 {
+  color: white;
+}
+
+.dark p {
+  color: #D1D5DB; /* text-gray-300 equivalent */
+}
+
+/* Fix for the About Us section */
+#why-us h2,
+#contact h2,
+#shop h2 {
+  color: #1F2937; /* text-gray-800 */
+}
+
+.dark #why-us h2,
+.dark #contact h2,
+.dark #shop h2 {
+  color: white;
+}
+
+/* Fix for ProductModal */
+.dark .bg-background h2, 
+.dark .bg-background h3 {
+  color: white;
+}
+
+/* Add these styles to your global CSS file */
+.phone-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.phone-input .PhoneInputCountry {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.phone-input .PhoneInputCountrySelect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.phone-input .PhoneInputCountryIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 0.25rem;
+}
+
+.phone-input .PhoneInputCountryIcon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.phone-input .PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Phone Input Styles */
+.phone-input-wrapper {
+  @apply relative;
+}
+
+.phone-input-wrapper .PhoneInput {
+  @apply relative;
+}
+
+.phone-input-wrapper .PhoneInputInput {
+  @apply w-full p-2 pl-16 border border-gray-300 dark:border-gray-600 rounded-lg
+         focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 
+         text-gray-900 dark:text-white;
+  height: 42px;
+}
+
+.phone-input-wrapper .PhoneInputCountry {
+  @apply absolute left-0 top-0 h-full flex items-center pl-3 pr-2 z-10;
+  @apply border-r border-gray-300 dark:border-gray-600;
+}
+
+.phone-input-wrapper .PhoneInputCountrySelectArrow {
+  @apply text-gray-900 transition-colors duration-200;
+}
+
+/* Dark mode arrow color */
+.dark .phone-input-wrapper .PhoneInputCountrySelectArrow {
+  @apply text-white;
+}
+
+/* Remove duplicate phone input styles */
+.phone-input-container {
+  display: none;
+}
+
+.phone-input {
+  display: none;
+}
+
+/* Dark mode specific styles */
+.dark .phone-input-container .PhoneInputCountryIcon {
+  @apply bg-gray-700;
+}
+
+.dark .phone-input-container .PhoneInputInput {
+  @apply bg-gray-700 text-white;
 }

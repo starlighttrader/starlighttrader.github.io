@@ -173,47 +173,22 @@ const Shop = ({ currency }) => {
     // Generate order ID using the product object
     const orderId = generateOrderId(product);
     
-    try {
-      // Prepare request payload according to specified format
-      const payload = {
-        merchantID: process.env.NEXT_PUBLIC_EZPAYFLOW_MERCHANT_ID,
-        orderID: orderId,
-        item: `${product.title}${product.type === 'indicators' ? '' : ' Course'}`,
-        currency: currency,
-        totalAmount: finalAmount
-      };
+    // Construct payment URL without merchantID
+    const paymentUrl = `/payment?${new URLSearchParams({
+      orderID: orderId,
+      item: `${product.title}${product.type === 'indicators' ? '' : ' Course'}`,
+      currency: currency,
+      totalAmount: finalAmount
+    }).toString()}`;
 
-      // Make API call
-      const response = await fetch('https://ezpayflow.vercel.app/api/payment-validation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        throw new Error('Payment validation failed');
-      }
-
-      const data = await response.json();
-
-      // Redirect to payment URL in current window
-      //  window.location.href = data.url;
-      
-      // Open payment URL in a new window
-      window.open(data.url, '_blank', 'noopener,noreferrer');
-      
-    } catch (error) {
-      console.error('Payment initialization error:', error);
-      alert('Failed to initialize payment. Please try again or contact support.');
-    }
+    // Open payment URL in a new window
+    window.open(paymentUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
     <section id="shop" className="py-20 px-4 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">Our Products</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Our Products</h2>
         
         <div className="flex justify-center gap-4 mb-8">
           {['all', 'courses', 'indicators', 'bundles'].map((type) => (
@@ -257,15 +232,15 @@ const Shop = ({ currency }) => {
                   <div className="text-center mb-3">
                     {isOnSale ? (
                       <>
-                        <span className="text-lg line-through text-red-500 mb-1 block">
+                        <span className="text-lg line-through text-red-500 dark:text-red-400 mb-1 block">
                           {getDisplayPrice(product)}
                         </span>
-                        <span className="text-xl font-bold text-green-600">
+                        <span className="text-xl font-bold text-green-600 dark:text-green-400">
                           {getDisplayPrice(product, true)}
                         </span>
                       </>
                     ) : (
-                      <span className="text-xl font-bold">
+                      <span className="text-xl font-bold text-gray-800 dark:text-white">
                         {getDisplayPrice(product)}
                       </span>
                     )}

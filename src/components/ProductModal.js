@@ -14,7 +14,7 @@ const ProductModal = ({ product, onClose, showGroupDiscount }) => {
           </button>
 
           {/* Content */}
-          <h2 className="text-2xl font-bold mb-4">{product.title}</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">{product.title}</h2>
           
           {/* Video Section */}
           <div className="mb-6">
@@ -31,19 +31,19 @@ const ProductModal = ({ product, onClose, showGroupDiscount }) => {
 
           {/* Detailed Description */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Course Overview</h3>
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Course Overview</h3>
             <p className="text-gray-600 dark:text-gray-300">
               {getDetailedDescription(product)}
             </p>
 
             {/* What You'll Learn / What You'll Get Section */}
             <div>
-              <h3 className="text-xl font-semibold mb-3">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">
                 {product.type === 'indicators' ? "What You'll Get" : "What You'll Learn"}
               </h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {product.fullDescription.map((item, index) => (
-                  <li key={index} className="flex items-start">
+                  <li key={index} className="flex items-start text-gray-800 dark:text-gray-300">
                     <svg className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -61,23 +61,23 @@ const ProductModal = ({ product, onClose, showGroupDiscount }) => {
 
             {/* Additional Information */}
             <div>
-              <h3 className="text-xl font-semibold mb-3">Additional Information</h3>
+              <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Additional Information</h3>
               <div className="grid grid-cols-3 gap-4 text-sm">
                 {product.title !== 'TradingView Indicators' && (
                   <>
                     <div>
-                      <p className="font-semibold">Duration</p>
-                      <p>{product.title === 'StarLightTrader Pro' ? '12 weeks' : '4 weeks'}</p>
+                      <p className="font-semibold text-gray-700 dark:text-gray-200">Duration</p>
+                      <p className="text-gray-600 dark:text-gray-300">{product.title === 'StarLightTrader Pro' ? '12 weeks' : '4 weeks'}</p>
                     </div>
                     <div>
-                      <p className="font-semibold">Level</p>
-                      <p>Beginner to Advanced</p>
+                      <p className="font-semibold text-gray-700 dark:text-gray-200">Level</p>
+                      <p className="text-gray-600 dark:text-gray-300">Beginner to Advanced</p>
                     </div>
                   </>
                 )}
                 <div>
-                  <p className="font-semibold">Support</p>
-                  <p>
+                  <p className="font-semibold text-gray-700 dark:text-gray-200">Support</p>
+                  <p className="text-gray-600 dark:text-gray-300">
                     {product.title === 'StarLightTrader Pro' 
                       ? 'Discord (3 months access)'
                       : 'Discord | Email'}
@@ -85,8 +85,8 @@ const ProductModal = ({ product, onClose, showGroupDiscount }) => {
                 </div>
                 {product.title === 'TradingView Indicators' && (
                   <div>
-                    <p className="font-semibold">Updates</p>
-                    <p>Lifetime Access</p>
+                    <p className="font-semibold text-gray-700 dark:text-gray-200">Updates</p>
+                    <p className="text-gray-600 dark:text-gray-300">Lifetime Access</p>
                   </div>
                 )}
               </div>
