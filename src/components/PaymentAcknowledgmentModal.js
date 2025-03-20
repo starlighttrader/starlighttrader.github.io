@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 const PaymentAcknowledgmentModal = ({ orderID, item, currency, amount, merchantDetails, paymentProvider }) => {
   const router = useRouter();
-  const [timeLeft, setTimeLeft] = useState(300);
+  const [timeLeft, setTimeLeft] = useState(100);
 
   useEffect(() => {
     // Countdown timer

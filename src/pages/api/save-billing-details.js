@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-import axios from 'axios';
+import https from 'https';
 
 /**
  * @typedef {Object} BillingDetails
@@ -84,32 +84,45 @@ const formatResponse = (statusCode, { success, message, data, error }) => {
  * @returns {Promise<void>}
  */
 const sendTelegramNotification = async (message) => {
-  try {
-    if (!telegramBotToken || !telegramChatId) {
-      throw new Error('Telegram bot token or chat ID is missing');
-    }
+  if (!telegramBotToken || !telegramChatId) {
+    console.error('Telegram bot token or chat ID is missing');
+    return;
+  }
 
-    const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
-    const payload = {
-      chat_id: telegramChatId,
-      text: message,
-      parse_mode: 'Markdown'
+  const payload = JSON.stringify({
+    chat_id: telegramChatId,
+    text: message
+  });
+
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'api.telegram.org',
+      port: 443,
+      path: `/bot${telegramBotToken}/sendMessage`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload)
+      }
     };
 
-    // console.log('Sending Telegram message:', { url, payload });
-
-    const response = await axios.post(url, payload);
-    console.log('Telegram API response:', response.data);
-    
-    return response.data;
-  } catch (error) {
-    console.error('Failed to send Telegram notification:', {
-      error: error.response?.data || error.message,
-      config: error.config,
-      status: error.response?.status
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => data += chunk);
+      res.on('end', () => {
+        console.log('Telegram request completed');
+        resolve(JSON.parse(data));
+      });
     });
-    throw error;
-  }
+
+    req.on('error', (error) => {
+      console.error('Error sending Telegram message:', error.message);
+      reject(error);
+    });
+
+    req.write(payload);
+    req.end();
+  });
 };
 
 /**
@@ -157,6 +170,7 @@ const saveBillingDetailsToMongoDB = async (orderID, billingDetails, paymentProvi
   }
 };
 
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json(
@@ -197,30 +211,21 @@ export default async function handler(req, res) {
       );
     }
 
-    // Send success response immediately
-    res.status(200).json(
-      formatResponse(200, {
-        success: true,
-        message: 'Billing details received',
-        data: { orderID }
-      })
-    );
-
-    // Process MongoDB and Telegram operations asynchronously
-    (async () => {
-      try {
-        // Save to MongoDB asynchronously
-        await saveBillingDetailsToMongoDB(orderID, billingDetails, paymentProvider);
-
-        // Send Telegram notification
-        const telegramMessage = `
+    try {      
+      // Save to MongoDB first
+      console.log('Saving to MongoDB for order:', orderID);
+      await saveBillingDetailsToMongoDB(orderID, billingDetails, paymentProvider);
+      console.log('MongoDB save completed for order:', orderID);
+      
+      // Prepare Telegram notification
+      const telegramMessage = `
 🔔 *New Payment Notification*
 
 📄 *Order Details:*
 🆔 Order ID: ${orderID}
-📦 Item: ${billingDetails.item || 'N/A'}
-💰 Amount: ${billingDetails.currency === 'INR' ? '₹' : '$'} ${billingDetails.amount || 'N/A'}
-💳 Payment Method: ${billingDetails.paymentMethod || 'N/A'}
+📦 Item: ${billingDetails.item}
+💰 Amount: ${billingDetails.currency} ${billingDetails.amount}
+💳 Payment Method: ${paymentProvider}
 📊 Status: PAYMENT INITIATED
 
 👤 *Customer Details:*
@@ -228,20 +233,36 @@ export default async function handler(req, res) {
 📧 Email: ${billingDetails.emailID}
 📞 Mobile: ${billingDetails.phoneNumber}
 📍 Location: ${billingDetails.city}, ${billingDetails.state}, ${billingDetails.country}
-        `;
-
-        await sendTelegramNotification(telegramMessage).catch(error => {
-          console.error('Telegram notification failed:', error);
-        });
-      } catch (error) {
-        console.error('Async operation error:', {
-          type: error.name,
-          message: error.message,
-          stack: error.stack
-        });
-      }
-    })().catch(console.error);
-
+      `;
+      
+      // Send Telegram notification (non-blocking)
+      console.log('Sending Telegram notification for order:', orderID);
+      sendTelegramNotification(telegramMessage);
+      
+      // Send success response after MongoDB save
+      return res.status(200).json(
+        formatResponse(200, {
+          success: true,
+          message: 'Billing details processed successfully',
+          data: { orderID }
+        })
+      );
+    } catch (error) {
+      console.error('Operation failed:', {
+        orderID,
+        error: error.message,
+        stack: error.stack
+      });
+      
+      // Still return success to client as we don't want to block the payment flow
+      return res.status(200).json(
+        formatResponse(200, {
+          success: true,
+          message: 'Billing details received',
+          data: { orderID }
+        })
+      );
+    }
   } catch (error) {
     console.error('Request handler error:', error);
     return res.status(500).json(

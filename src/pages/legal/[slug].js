@@ -2,27 +2,38 @@ import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote } from 'next-mdx-remote'
 import fs from 'fs'
 import path from 'path'
-import { useEffect, useState } from 'react'
+import { useTheme } from '../../components/ThemeProvider'
+import { Sun, Moon } from 'lucide-react'
 
 const LegalPage = ({ source }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false)
-
-  useEffect(() => {
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    setIsDarkMode(darkModeMediaQuery.matches)
-
-    const handleThemeChange = (e) => {
-      setIsDarkMode(e.matches)
-    }
-
-    darkModeMediaQuery.addEventListener('change', handleThemeChange)
-    return () => darkModeMediaQuery.removeEventListener('change', handleThemeChange)
-  }, [])
+  const { isDarkTheme, toggleTheme } = useTheme()
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <div className={`prose prose-lg mx-auto ${isDarkMode ? 'prose-invert' : ''}`}>
-        <MDXRemote {...source} />
+    <div className="min-h-screen bg-white dark:bg-gray-900">
+      <div className="max-w-4xl mx-auto px-4 py-12 relative">
+        <button
+          onClick={toggleTheme}
+          className="fixed top-4 right-4 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          aria-label="Toggle theme"
+        >
+          {isDarkTheme ? (
+            <Sun className="h-5 w-5 text-gray-300" />
+          ) : (
+            <Moon className="h-5 w-5 text-gray-700" />
+          )}
+        </button>
+        <article className={`prose prose-lg mx-auto dark:prose-invert
+          prose-headings:text-gray-900 dark:prose-headings:text-white
+          prose-p:text-gray-600 dark:prose-p:text-gray-300
+          prose-strong:text-gray-900 dark:prose-strong:text-white
+          prose-ul:text-gray-600 dark:prose-ul:text-gray-300
+          prose-li:text-gray-600 dark:prose-li:text-gray-300
+          prose-a:text-blue-600 dark:prose-a:text-blue-400
+          [&>ul>li]:marker:text-gray-900 dark:[&>ul>li]:marker:text-white
+          [&>ul]:marker:text-gray-900 dark:[&>ul]:marker:text-white
+        `}>
+          <MDXRemote {...source} />
+        </article>
       </div>
     </div>
   )
