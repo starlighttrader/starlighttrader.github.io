@@ -91,7 +91,8 @@ const sendTelegramNotification = async (message) => {
 
   const payload = JSON.stringify({
     chat_id: telegramChatId,
-    text: message
+    text: message,
+    parse_mode: 'HTML'
   });
 
   return new Promise((resolve, reject) => {
@@ -110,13 +111,17 @@ const sendTelegramNotification = async (message) => {
       let data = '';
       res.on('data', (chunk) => data += chunk);
       res.on('end', () => {
-        console.log('Telegram request completed');
-        resolve(JSON.parse(data));
+        if (res.statusCode === 200) {
+          resolve();
+        } else {
+          console.error('Telegram API error:', data);
+          reject(new Error(`Telegram API error: ${res.statusCode}`));
+        }
       });
     });
 
     req.on('error', (error) => {
-      console.error('Error sending Telegram message:', error.message);
+      console.error('Error sending Telegram notification:', error);
       reject(error);
     });
 
@@ -219,25 +224,30 @@ export default async function handler(req, res) {
       
       // Prepare Telegram notification
       const telegramMessage = `
-🔔 *New Payment Notification*
+<b>🔔 New Payment Notification</b>
 
-📄 *Order Details:*
+<b>ORDER DETAILS:</b>
 🆔 Order ID: ${orderID}
 📦 Item: ${billingDetails.item}
 💰 Amount: ${billingDetails.currency} ${billingDetails.amount}
 💳 Payment Method: ${paymentProvider}
 📊 Status: PAYMENT INITIATED
 
-👤 *Customer Details:*
+<b>CUSTOMER DETAILS:</b>
 👤 Name: ${billingDetails.firstName} ${billingDetails.lastName}
 📧 Email: ${billingDetails.emailID}
 📞 Mobile: ${billingDetails.phoneNumber}
 📍 Location: ${billingDetails.city}, ${billingDetails.state}, ${billingDetails.country}
-      `;
+`.trim();
       
       // Send Telegram notification (non-blocking)
       console.log('Sending Telegram notification for order:', orderID);
-      sendTelegramNotification(telegramMessage);
+      try {
+        await sendTelegramNotification(telegramMessage);
+        console.log('Telegram notification sent successfully for order:', orderID);
+      } catch (error) {
+        console.error('Failed to send Telegram notification:', error);
+      }
       
       // Send success response after MongoDB save
       return res.status(200).json(
