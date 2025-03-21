@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ProductModal from './ProductModal';
 import PopularCard from './PopularCard';
 import popularConfig from '../config/CustomizeProduct.json';
+import { useRouter } from 'next/router';
 
 const EXCHANGE_RATE_API = 'https://api.exchangerate-api.com/v4/latest/INR';
 const FALLBACK_USD_RATE = 1/85; // 1 USD = 85 INR
@@ -92,6 +93,7 @@ const Shop = ({ currency }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [exchangeRate, setExchangeRate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchExchangeRate = async () => {
@@ -162,6 +164,9 @@ const Shop = ({ currency }) => {
   };
 
   const handleBuyNow = async (product) => {
+    // Preload the payment page
+    router.prefetch('/payment');
+    
     const isOnSale = product.title === popularConfig.onSaleProduct.title;
     const basePrice = isOnSale ? popularConfig.onSaleProduct.discountedPrice.INR : product.price.INR;
     

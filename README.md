@@ -17,4 +17,19 @@ npm run build
 npx serve ./out -s --cors -l 3000
 ```
 
+### Environment Variables
 
+To run this project, you need to create a `.env.local` file in the root directory of the project. This file should contain the following fields and values:
+
+```bash
+NEXT_PUBLIC_SLT_TGBOT_TOKEN=<ANY_TELEGRAM_BOT_TOKEN>
+NEXT_PUBLIC_SLT_TG_CHANNEL_ID=<CHANNEL_ID_WHERE_ABOVE_BOT_IS_AN_ADMIN>
+NEXT_PUBLIC_PHONEPE_MERCHANT_ID=PGTESTPAYUAT86
+NEXT_PUBLIC_PHONEPE_SALT_KEY=96434309-7796-489d-8924-ab56988a6076
+NEXT_PUBLIC_PHONEPE_SALT_INDEX=1
+NEXT_PUBLIC_MERCHANT_PAYEE_NAME="YOUR UPI NAME"
+NEXT_PUBLIC_MERCHANT_VPA="7777777777@paytm"
+NEXT_PUBLIC_MONGODB_URI="mongodb://localhost:27017/"
+```
+
+Make sure to replace the placeholder values with your actual credentials and configuration details. This is essential for the application to function correctly. When deploying to vercel, add these as environment variables with production values

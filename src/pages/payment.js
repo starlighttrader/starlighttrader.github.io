@@ -1,8 +1,20 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import PaymentCheckout from '@/components/PaymentCheckout';
 import merchantConfig from '@/config/merchantConfig.json'; // Import the merchant config
 import discountCodes from '@/utils/discountCodesConfig';
+
+// Dynamically import PaymentCheckout with loading fallback
+const PaymentCheckout = dynamic(() => import('@/components/PaymentCheckout'), {
+  loading: () => (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="animate-pulse text-lg text-gray-600 dark:text-gray-300">
+        Preparing payment Checkout Page...
+      </div>
+    </div>
+  ),
+  ssr: false // Disable server-side rendering for payment component
+});
 
 const PaymentPage = () => {
   const router = useRouter();
